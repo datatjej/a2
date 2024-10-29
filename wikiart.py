@@ -63,14 +63,15 @@ class WikiArtModel(nn.Module):
         super().__init__()
 
         self.conv2d = nn.Conv2d(3, 1, (4,4), padding=2)
-        self.maxpool2d = nn.MaxPool2d((4,4), padding=2)
+        self.maxpool2d = nn.MaxPool2d((2,2), padding=0)
         self.flatten = nn.Flatten()
-        self.batchnorm1d = nn.BatchNorm1d(105*105)
-        self.linear1 = nn.Linear(105*105, 300)
-        self.dropout = nn.Dropout(0.01)
+        self.batchnorm1d = nn.BatchNorm1d(208*208)
+        self.linear1 = nn.Linear(208*208, 300)
+        self.dropout = nn.Dropout(0.3)
         self.relu = nn.ReLU()
         self.linear2 = nn.Linear(300, num_classes)
         self.softmax = nn.LogSoftmax(dim=1)
+
 
     def forward(self, image):
         output = self.conv2d(image)

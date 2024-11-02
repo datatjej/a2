@@ -26,11 +26,11 @@ device = config["device"]
 
 print("Running...")
 
-#traindataset = WikiArtDataset(trainingdir, device)
+
 testingdataset = WikiArtDataset(testingdir, device)
 
 def test(modelfile=None, device="cpu"):
-    loader = DataLoader(testingdataset, batch_size=1)
+    loader = DataLoader(testingdataset, batch_size=1, shuffle=False)
 
     model = WikiArtModel()
     model.load_state_dict(torch.load(modelfile, weights_only=True))

@@ -1,6 +1,7 @@
 {
     "modelfile": "wikiart.pth",
     "trainingdir": "../../wikiart/train",
+    "validationdir": "../../wikiart/valid",
     "testingdir": "../../wikiart/test",
     "device": "cuda:1",
     "epochs": 10,

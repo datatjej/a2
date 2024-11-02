@@ -20,13 +20,15 @@ args = parser.parse_args()
 config = json.load(open(args.config))
 
 trainingdir = config["trainingdir"]
-testingdir = config["testingdir"]
+validationdir = config["validationdir"]
+
 device = config["device"]
 
 print("Running...")
 
 
 traindataset = WikiArtDataset(trainingdir, device)
+validationset = WikiArtDataset(validationdir, device)
 
 print(traindataset.imgdir)
 
@@ -39,16 +41,19 @@ print(the_image, the_image.size())
 
 
 def train(epochs=3, batch_size=32, modelfile=None, device="cpu"):
-    loader = DataLoader(traindataset, batch_size=batch_size, shuffle=True)
+    train_loader = DataLoader(traindataset, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(validationset, batch_size=batch_size, shuffle=False)	
 
     model = WikiArtModel().to(device)
     optimizer = Adam(model.parameters(), lr=0.001)
     criterion = nn.NLLLoss().to(device)
+
+    best_val_loss = float('inf')
     
     for epoch in range(epochs):
         print("Starting epoch {}".format(epoch))
         accumulate_loss = 0
-        for batch_id, batch in enumerate(tqdm.tqdm(loader)):
+        for batch_id, batch in enumerate(tqdm.tqdm(train_loader)):
             X, y = batch
             y = y.to(device)
             optimizer.zero_grad()
@@ -60,9 +65,25 @@ def train(epochs=3, batch_size=32, modelfile=None, device="cpu"):
 
         print("In epoch {}, loss = {}".format(epoch, accumulate_loss))
 
-    if modelfile:
-        torch.save(model.state_dict(), modelfile)
+        # Validation phase
+        model.eval()
+        val_loss = 0
+        with torch.no_grad():
+            for batch_id, batch in enumerate(tqdm.tqdm(val_loader)):
+                X, y = batch
+                y = y.to(device)
+                output = model(X)
+                loss = criterion(output, y)
+                val_loss += loss.item()
+        
+        print("In epoch {}, validation loss = {}".format(epoch, val_loss))
+
+        # Save the model if validation loss decreases
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            if modelfile:
+                torch.save(model.state_dict(), modelfile)
 
     return model
 
-model = train(config["epochs"], config["batch_size"], modelfile=config["modelfile"], device=device)
+model = train(config["epochs"], config["batch_size"], modelfile=config["modelfile"], device=device)    

@@ -33,8 +33,6 @@ For the autoencoder part I implemented an encoder  with:
 * unlike the classification task in part 1, the loss dropped considrably during training (possibly due to less complex task)
 * skipped using the validation data for this part, but that could possibly have improved it even further.
 
-
-
 ### Measure
 
 For measuring the model's ability to reconstruct images I just:
@@ -42,7 +40,6 @@ For measuring the model's ability to reconstruct images I just:
 But that number didn't feel very informative (0.0044) compared to the accuracy measuremnet of the previous task. The visual inspection of a single input/output image in the test set provided a better picture of the model's abilty:
 
 ![image](images/a2_input_output2.png)
-
 
 ### Cluster visualization
 
@@ -58,3 +55,13 @@ Judging by this visaluzation, the PCA clustering does not seem to perform terrib
 ## Part 3: generation/style transfer
 
 File: `part3_generator.ipynb`
+
+I was very close to throwing in the towel on this as I was having issues getting the tensor math to math, but all of a sudden it started training at least. What I did:
+* copied over the code from part 2
+* in the AutoEncoder class, I added a method for embedding the label (the embedding dim=16 was chosen a bit at random to start off)
+* added width and height dimensions to the label to match the image tensor format
+* concatenated image and label tensor --> the resulting channel dimension (512 + 16 = 528) was added to the decoder's first `Conv2d` layer's input
+
+For evaluating it on an image with the wrong label, I did a dirty hack and created a folder called `mismatched` where I created a `Cubism` folder with a romanticism image from the test set. The resulting image is a bit hazy, but that is probably more connected to the general quality of the autoencoder from before more so than the label augmentation: 
+
+![image](images/pca_encoded_images_actual_and_cluster_labels.png)

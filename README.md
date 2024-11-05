@@ -6,6 +6,8 @@
 
 ## Bonus A: make the in-class example actually learn something
 
+Files: `wikiart.py`, `train.py` ('train_val.py' if using validation set is not allowed), `test.py`
+
 I tried to increase the accuracy of the base code by doing the following:
 * decreasing the learning rate from 0.01 to 0.001 after learning that is the default lr for the Adam optimizer
 * incresing the dropout rate from 0.01 to 0.3 (having seen recommended dropout ranges between 0.2-0.5)

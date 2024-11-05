@@ -66,4 +66,4 @@ I was very close to throwing in the towel on this as I was having issues getting
 
 For evaluating it on an image with the wrong label, I did a dirty hack and created a folder called `mismatched` where I created a `Cubism` folder with a romanticism image from the test set. The resulting image is a bit hazy, but that is probably more connected to the general quality of the autoencoder from before more so than the label augmentation: 
 
-![image](images/a2_geneartor_evaluation.png)
+![image](images/a2_generator_evaluation.png)

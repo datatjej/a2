@@ -7,75 +7,16 @@
 ## Bonus A: make the in-class example actually learn something
 
 I tried to increase the accuracy of the base code by doing the following:
-* decreasing the kernel window in the maxpool2d layer (and adjusting the other values)
 * decreasing the learning rate from 0.01 to 0.001 after learning that is the default lr for the Adam optimizer
 * incresing the dropout rate from 0.01 to 0.3 (having seen recommended dropout ranges between 0.2-0.5)
-* using the validation set that comes with the wikiart dataset while training the model,
+* using the validation set that comes with the wikiart dataset while training the model.
   
-I thought some of these changes made a big change in the accuracy (up to 8 %) but realized a bit too late that there is too much randomness in how the model is trained and evaluated, leading to different accuracy scores every time I ran the base code's `test.py` class.
+I thought some of these changes made a big change in the accuracy (up to 8 %) but realized (a bit too late) that there seems to be too much randomness in how the model is trained and evaluated, leading to different accuracy scores every time I ran the base code's `test.py` class. Even running the code in Jupyter Notebook instead of Pythons files seemed to lead to different results. If time permitted I would have re-run all the experiments after setting a random seed.
 
 ## Part 1: fix class imbalance
+I tried to fix the class imbalance by implementing a Weighted Random Sampler (WRS). The WRS takes in an array of weights - one per dataset item - that is calculated based on the number of occurences per class. Classes with fewer datapoints can this way be assigned higher importance and possibly be picked up more than once in a single batch. The Jupyter Notebook implementation of this gave me an accuracy of ~7 % , but as mentioned above, the accuracy wasn't very consistent when running the code as Jupyter Notebook. The WRS also seems to be a rather heavy operation since many of the training runs led to `cuda:out of memory` error. 
 
-`du --inodes`
-
-`train`
-
-18      ./Action_painting
-15      ./Analytical_Cubism
-688     ./Art_Nouveau_Modern
-721     ./Baroque
-268     ./Color_Field_Painting
-91      ./Contemporary_Realism
-390     ./Cubism
-246     ./Early_Renaissance
-1127    ./Expressionism
-163     ./Fauvism
-198     ./High_Renaissance
-2269    ./Impressionism
-246     ./Mannerism_Late_Renaissance
-212     ./Minimalism
-373     ./Naive_Art_Primitivism
-41      ./New_Realism
-413     ./Northern_Renaissance
-80      ./Pointillism
-244     ./Pop_Art
-946     ./Post_Impressionism
-1712    ./Realism
-369     ./Rococo
-1157    ./Romanticism
-679     ./Symbolism
-38      ./Synthetic_Cubism
-197     ./Ukiyo_e
-
-
-`test`
-17      ./Abstract_Expressionism
-2       ./Analytical_Cubism
-32      ./Art_Nouveau_Modern
-34      ./Baroque
-6       ./Color_Field_Painting
-3       ./Contemporary_Realism
-15      ./Cubism
-9      ./Early_Renaissance
-52      ./Expressionism
-8       ./Fauvism
-9      ./High_Renaissance
-101     ./Impressionism
-12      ./Mannerism_Late_Renaissance
-10      ./Minimalism
-19      ./Naive_Art_Primitivism
-1       ./New_Realism
-23      ./Northern_Renaissance
-6       ./Pointillism
-15      ./Pop_Art
-51      ./Post_Impressionism
-82      ./Realism
-13      ./Rococo
-51      ./Romanticism
-44      ./Symbolism
-1       ./Synthetic_Cubism
-12      ./Ukiyo_e
-
+File: `part1_wikiart.ipynb`
 
 ## Part 2: autoencode and cluster represenations
 
@@ -88,6 +29,8 @@ For the autoencoder part I implemented an encoder  with:
 * changed the existing train function to take the input image (X) as the truth when meassuring the loss
 * unlike the classification task in part 1, the loss dropped considrably during training (possibly due to less complex task)
 * skipped using the validation data for this part, but that could possibly have improved it even further.
+
+File: `part2_autoencoder.ipynb`
 
 ### Measure
 
@@ -110,3 +53,5 @@ For the clustering and its visualization, I:
 Judging by this visaluzation, the PCA clustering does not seem to perform terribly well.
 
 ## Part 3: generation/style transfer
+
+File: `part3_generator.ipynb`

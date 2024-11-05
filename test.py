@@ -23,9 +23,7 @@ config = json.load(open(args.config))
 testingdir = config["testingdir"]
 device = config["device"]
 
-
 print("Running...")
-
 
 testingdataset = WikiArtDataset(testingdir, device)
 
@@ -46,8 +44,6 @@ def test(modelfile=None, device="cpu"):
         predictions.append(torch.argmax(output).unsqueeze(dim=0))
         truth.append(y)
 
-    #print("predictions {}".format(predictions))
-    #print("truth {}".format(truth))
     predictions = torch.concat(predictions)
     truth = torch.concat(truth)
     metric = metrics.MulticlassAccuracy()

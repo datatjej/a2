@@ -26,19 +26,8 @@ device = config["device"]
 
 print("Running...")
 
-
 traindataset = WikiArtDataset(trainingdir, device)
 validationset = WikiArtDataset(validationdir, device)
-
-print(traindataset.imgdir)
-
-the_image, the_label = traindataset[5]
-print(the_image, the_image.size())
-
-# the_showable_image = F.to_pil_image(the_image)
-# print("Label of img 5 is {}".format(the_label))
-# the_showable_image.show()
-
 
 def train(epochs=3, batch_size=32, modelfile=None, device="cpu"):
     train_loader = DataLoader(traindataset, batch_size=batch_size, shuffle=True)
@@ -78,12 +67,12 @@ def train(epochs=3, batch_size=32, modelfile=None, device="cpu"):
         
         print("In epoch {}, validation loss = {}".format(epoch, val_loss))
 
-        # Save the model if validation loss decreases
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             if modelfile:
                 torch.save(model.state_dict(), modelfile)
 
     return model
+
 
 model = train(config["epochs"], config["batch_size"], modelfile=config["modelfile"], device=device)    

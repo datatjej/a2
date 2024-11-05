@@ -1,9 +1,9 @@
 {
-    "modelfile": "wikiart.pth",
+    "modelfile": "wikiart-wrs.pth",
     "trainingdir": "../../wikiart/train",
-    "validationdir": "../../wikiart/valid",
     "testingdir": "../../wikiart/test",
-    "device": "cuda:1",
-    "epochs": 10,
+    "validationdir": "../../wikiart/valid",
+    "device": "cuda:0",
+    "epochs": 20,
     "batch_size": 32
 }

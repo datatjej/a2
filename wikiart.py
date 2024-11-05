@@ -21,6 +21,7 @@ class WikiArtImage:
     def get(self):
         if not self.loaded:
             self.image = read_image(os.path.join(self.imgdir, self.label, self.filename)).float()
+            self.image /= 255.0
             self.loaded = True
 
         return self.image

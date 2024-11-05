@@ -3,6 +3,7 @@
 ## Data
 
 15,274 images, 416x416 pixles
+URL: https://universe.roboflow.com/art-dataset/wiki-art/dataset/2
 
 ## Bonus A: make the in-class example actually learn something
 

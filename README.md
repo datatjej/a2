@@ -14,11 +14,14 @@ I tried to increase the accuracy of the base code by doing the following:
 I thought some of these changes made a big change in the accuracy (up to 8 %) but realized (a bit too late) that there seems to be too much randomness in how the model is trained and evaluated, leading to different accuracy scores every time I ran the base code's `test.py` class. Even running the code in Jupyter Notebook instead of Pythons files seemed to lead to different results. If time permitted I would have re-run all the experiments after setting a random seed.
 
 ## Part 1: fix class imbalance
-I tried to fix the class imbalance by implementing a Weighted Random Sampler (WRS). The WRS takes in an array of weights - one per dataset item - that is calculated based on the number of occurences per class. Classes with fewer datapoints can this way be assigned higher importance and possibly be picked up more than once in a single batch. The Jupyter Notebook implementation of this gave me an accuracy of ~7 % , but as mentioned above, the accuracy wasn't very consistent when running the code as Jupyter Notebook. The WRS also seems to be a rather heavy operation since many of the training runs led to `cuda:out of memory` error. 
 
 File: `part1_wikiart.ipynb`
 
+I tried to fix the class imbalance by implementing a Weighted Random Sampler (WRS). The WRS takes in an array of weights - one per dataset item - that is calculated based on the number of occurences per class. Classes with fewer datapoints can this way be assigned higher importance and possibly be picked up more than once in a single batch. The Jupyter Notebook implementation of this gave me an accuracy of ~7 % , but as mentioned above, the accuracy wasn't very consistent when running the code as Jupyter Notebook. The WRS also seems to be a rather heavy operation since many of the training runs led to `cuda:out of memory` error. 
+
 ## Part 2: autoencode and cluster represenations
+
+File: `part2_autoencoder.ipynb`
 
 ### Implementation 
 
@@ -30,7 +33,7 @@ For the autoencoder part I implemented an encoder  with:
 * unlike the classification task in part 1, the loss dropped considrably during training (possibly due to less complex task)
 * skipped using the validation data for this part, but that could possibly have improved it even further.
 
-File: `part2_autoencoder.ipynb`
+
 
 ### Measure
 
